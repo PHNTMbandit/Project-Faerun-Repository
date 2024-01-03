@@ -1,11 +1,33 @@
 import "./App.css";
+import { useState } from "react";
+import { Dropdown } from "./components/Dropdown";
+import { getRace, races } from "./classes/race";
+import { AbilityScoreModifier } from "./classes/abilityScore";
 
-function App() {
+export default function App() {
+  const [race, setRace] = useState("");
+  const selectedRace = getRace(race);
+
   return (
     <div>
-      <p>Hi</p>
+      <label>
+        Select your race
+        <Dropdown
+          optionList={races}
+          onChange={handleRaceDropdownChange}
+        />
+        <p>{selectedRace?.name}</p>
+        {selectedRace?.abilityScoreModifiers.map(
+          (abilityScore: AbilityScoreModifier, key: any) => (
+            <li key={key}>{abilityScore.abilityScoreModifier}</li>
+          )
+        )}
+      </label>
     </div>
   );
-}
 
-export default App;
+  function handleRaceDropdownChange(event: any) {
+    event.preventDefault();
+    setRace(event.target.value);
+  }
+}
